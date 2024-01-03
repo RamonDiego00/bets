@@ -31,8 +31,10 @@ def encontrar_valores(palavras):
         indice_valor_retorno = indice_retornos + 2
         if indice_valor_retorno < len(palavras):
             valor_retorno_str = palavras[indice_valor_retorno].replace('R$', '').replace(',', '.')
-            valor_retorno = float(valor_retorno_str)
-
+            if 'O' in valor_retorno_str:
+                valor_retorno = 0.00
+            else:
+                valor_retorno = float(valor_retorno_str)
         # Encontrar o valor apostado (uma posição à frente)
         indice_apostado = indice_retornos + 1
         if indice_apostado < len(palavras):
@@ -54,12 +56,16 @@ def encontrar_indice_retornos(palavras):
         return indice_retornos
     except ValueError:
         try:
-            indice_total = palavras.index('Total')
-            return indice_total
+            indice_retornos = palavras.index('Retorno')
+            return indice_retornos + 1
         except ValueError:
-            return -1
+            try:
+                indice_total = palavras.index('Total')
+                return indice_total
+            except ValueError:
+                return -1
 
-def planilha():
+def planilha(nome):
     creds = None
     if os.path.exists("token.json"):
         creds = Credentials.from_authorized_user_file("token.json", SCOPES)
@@ -82,7 +88,7 @@ def planilha():
     pytesseract.pytesseract.tesseract_cmd = r'C:\Program Files\Tesseract-OCR\tesseract.exe'
     ""
     # Caminho da imagem
-    caminho_imagem = r'C:\Users\ramon\Downloads\palace.jpeg'
+    caminho_imagem = nome
 
     # Abrir a imagem usando a biblioteca PIL
     imagem = Image.open(caminho_imagem)
@@ -94,7 +100,7 @@ def planilha():
     palavras = texto_extraido.split()
     print(palavras)
 
-    # nova_linha = ["1", "True", "20", "29/12/2023", "Chute a gol", "1000"]
+    # nova_linha = ["1", "True", "20", "29/12/2023", "Indefinido", "1000"]
     id_unico = random.randint(1000, 9999)
 
     # Gera a data atual
@@ -105,7 +111,7 @@ def planilha():
     linha.insert(0, linha.pop(2))
     linha.insert(0, id_unico)
     linha.insert(3, data_atual)
-    linha.insert(4, "Chute a gol")
+    linha.insert(4, "Indefinido")
 
     # nova_linha = [str(id_unico), "True", "8118.0", data_atual, "Chute a gol", "apostado"]
     nova_linha = linha

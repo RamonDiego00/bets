@@ -1,26 +1,98 @@
-from PIL import Image
-import pytesseract
 import time
 
-# Capturando texto da imagem
+import pytesseract
+from PIL import Image
+import cv2
+import pytesseract
 
-# Caminho para o executável do Tesseract (ajuste conforme necessário)
-pytesseract.pytesseract.tesseract_cmd = r'C:\Program Files\Tesseract-OCR\tesseract.exe'
-""
-# Caminho da imagem
-caminho_imagem = r'C:\Users\ramon\Downloads\opa.jpeg'
 
-# Abrir a imagem usando a biblioteca PIL
-imagem = Image.open(caminho_imagem)
+def copiando():
+    from PIL import Image
+    import pytesseract
 
-# Extrair o texto usando pytesseract
-texto_extraido = pytesseract.image_to_string(imagem)
+    # Caminho para o executável do Tesseract (ajuste conforme necessário)
+    pytesseract.pytesseract.tesseract_cmd = r'C:\Program Files\Tesseract-OCR\tesseract.exe'
 
-# Dividir o texto em palavras
-palavras = texto_extraido.split()
+    # Caminho da imagem
+    caminho_imagem = r'C:\Users\ramon\Downloads\teste1.jpeg'
+
+    # Abrir a imagem usando a biblioteca PIL
+    imagem = Image.open(caminho_imagem)
+
+    # Obter informações de formatação usando o Tesseract
+    dados_formatacao = pytesseract.image_to_data(imagem, output_type='dict')
+
+    # Imprimir todas as chaves disponíveis
+    print("Chaves disponíveis:", dados_formatacao.keys())
+
+    # Iterar sobre as caixas de texto e imprimir informações relevantes
+    for i, texto in enumerate(dados_formatacao['text']):
+        print(f'Texto {i + 1}: {texto}')
+
+        # Verificar se 'bold' está disponível antes de tentar acessá-lo
+        if 'bold' in dados_formatacao:
+            print(f'Negrito: {dados_formatacao["bold"][i] == "1"}')
+        else:
+            print('Informação de negrito não disponível')
+
+        print(f'Confiança: {dados_formatacao["conf"][i]}')
+        print('---')
+
+    # Caminho da imagem
+
+    # Capturando texto da imagem
+
+    # Caminho para o executável do Tesseract (ajuste conforme necessário)
+    pytesseract.pytesseract.tesseract_cmd = r'C:\Program Files\Tesseract-OCR\tesseract.exe'
+    ""
+    # Caminho da imagem
+    caminho_imagem = r'C:\Users\ramon\Downloads\teste1.jpeg'
+
+    # Abrir a imagem usando a biblioteca PIL
+    imagem = Image.open(caminho_imagem)
+
+    # Extrair o texto usando pytesseract
+    texto_extraido = pytesseract.image_to_string(imagem)
+
+    # Dividir o texto em palavras
+    palavras = texto_extraido.split()
+
+    print(palavras)
+
+    #Vamos mudar a estrategia, pegar o index de criar(começo) e pegar o index de valor(final)
+    try:
+        indice_criar = palavras.index('Criar')
+        print(indice_criar)
+    except ValueError:
+        indice_criar = -1
+    try:
+        indice_valor = palavras.index('Valor')
+        print(indice_valor)
+    except ValueError:
+        indice_total = 1
+
+
+    #pegar confronto
+    confronto = ' '.join(palavras[11:14])
+    print(confronto)
+    #Separar em container cada aposta das multiplas
+
+
+
+
+    #fazer tratamento para cada tipo de aposta(Time/jogador)
+
+
+    #Time  cartão
+    #Time gols (mais ou menos gols)
+    #Time resultado
 
 
 def extrair_informacoes(lista):
+
+
+
+
     informacoes = {}
     encontrou_numero = False
     entre_tracos = False
@@ -53,11 +125,11 @@ def extrair_informacoes(lista):
 
 
 # Extraindo informações
-informacoes_extraidas = extrair_informacoes(texto_extraido)
+# informacoes_extraidas = extrair_informacoes(texto_extraido)
 
 # Imprimindo as informações extraídas
-for chave, valor in informacoes_extraidas.items():
-    print(f'{chave}: {valor}')
+# for chave, valor in informacoes_extraidas.items():
+#     print(f'{chave}: {valor}')
 
 
 # Imprimir o texto no console
@@ -66,7 +138,6 @@ for chave, valor in informacoes_extraidas.items():
 # Navegação para o site
 
 from playwright.sync_api import sync_playwright
-from unicodedata import name
 
 
 def example_playwright_automation():
