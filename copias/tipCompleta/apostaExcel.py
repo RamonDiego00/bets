@@ -14,7 +14,7 @@ SCOPES = ["https://www.googleapis.com/auth/spreadsheets"]
 
 # The ID and range of a sample spreadsheet.
 SAMPLE_SPREADSHEET_ID = "1KyZhn9tXtMfHNf76fe0RP0c19c9iwEzLtkKXW6LsptU"
-SAMPLE_RANGE_NAME = "Página1!A2:E"
+SAMPLE_RANGE_NAME = "Janeiro!A2:E"
 
 
 def encontrar_valores(palavras):

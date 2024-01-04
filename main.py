@@ -4,10 +4,10 @@ from copias.tipCompleta import apostaExcel
 from copias.tipPadrao import apostaGrupos
 
 #Vai atualizar a planilha com a aposta resolvida
-apostaExcel.planilha(r'C:\Users\ramon\Downloads\1.jpeg')
+# apostaExcel.planilha(r'C:\Users\ramon\Downloads\3.jpeg')
 
 #Vai fazer a cópia da aposta
-# apostaGrupos.copiando()
+apostaGrupos.copiando()
 
 #Faz pesquisas detalhadas dos jogadores
 
