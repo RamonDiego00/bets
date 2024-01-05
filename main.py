@@ -7,7 +7,7 @@ from copias.tipPadrao import apostaGrupos
 # apostaExcel.abrindo_janela()
 
 #Vai fazer a cópia da aposta
-apostaGrupos.copiando()
+# apostaGrupos.copiando()
 
 #Faz pesquisas detalhadas dos jogadores
 
