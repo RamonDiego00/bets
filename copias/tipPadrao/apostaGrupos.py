@@ -4,55 +4,10 @@ from PIL import Image
 import cv2
 import pytesseract
 
-def extrair_paragrafos():
-    pytesseract.pytesseract.tesseract_cmd = r'C:\Program Files\Tesseract-OCR\tesseract.exe'
-    # Carregue a imagem
-    imagem = cv2.imread(r'C:\Users\ramon\Downloads\teste1.jpeg', cv2.IMREAD_GRAYSCALE)
-
-    # Aplique binarização para segmentar linhas
-    _, binarizada = cv2.threshold(imagem, 128, 255, cv2.THRESH_BINARY_INV)
-
-    # Use pytesseract para obter informações sobre os espaçamentos
-    info_linhas = pytesseract.image_to_boxes(binarizada)
-
-    # Inicialize variáveis
-    paragrafos = []
-    paragrafo_atual = ""
-    espaco_limite = 1  # Ajuste conforme necessário
-    primeiro_paragrafo = True
-
-    # Analise o espaçamento vertical entre as linhas
-    for linha_info in info_linhas.splitlines():
-        valores = linha_info.split()
-
-        # Verifique se há informações suficientes para o desempacotamento
-        if len(valores) >= 7:
-            _, _, _, _, y_max, _, _ = map(int, valores[4:11])
-
-            # Se o espaçamento vertical for maior que o limite, adicione o parágrafo à lista
-            if y_max > espaco_limite:
-                if not primeiro_paragrafo:
-                    paragrafos.append(paragrafo_atual.strip())
-                else:
-                    primeiro_paragrafo = False
-                # Reinicie o parágrafo atual
-                paragrafo_atual = ""
-            else:
-                # Adicione a linha ao parágrafo atual
-                paragrafo_atual += valores[11]
-
-    # Adicione o último parágrafo à lista
-    paragrafos.append(paragrafo_atual.strip())
-
-    # Imprima os parágrafos em ordem numerada
-    for i, paragrafo in enumerate(paragrafos, start=1):
-        print(f"Parágrafo {i}:\n{paragrafo}\n")
-
-
 
 def copiando():
 
-    extrair_paragrafos()
+    # extrair_paragrafos()
 
     # Caminho da imagem
 

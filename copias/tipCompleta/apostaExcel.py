@@ -2,12 +2,14 @@ import datetime
 import random
 import os.path
 import pytesseract
+import tkinter as tk
 from PIL import Image
 from google.auth.transport.requests import Request
 from google.oauth2.credentials import Credentials
 from google_auth_oauthlib.flow import InstalledAppFlow
 from googleapiclient.discovery import build
 from googleapiclient.errors import HttpError
+from tkinter import filedialog
 
 # If modifying these scopes, delete the file token.json.
 SCOPES = ["https://www.googleapis.com/auth/spreadsheets"]
@@ -16,6 +18,30 @@ SCOPES = ["https://www.googleapis.com/auth/spreadsheets"]
 SAMPLE_SPREADSHEET_ID = "1KyZhn9tXtMfHNf76fe0RP0c19c9iwEzLtkKXW6LsptU"
 SAMPLE_RANGE_NAME = "Janeiro!A2:E"
 
+# Interface visual
+
+def selecionar_imagens():
+    # Abre uma janela de seleção de arquivos
+    arquivos = filedialog.askopenfilenames(
+        title="Selecionar Imagens",
+        filetypes=[("Arquivos de Imagem", "*.png;*.jpg;*.jpeg;*.gif")]
+    )
+
+    # Exibe os caminhos dos arquivos selecionados
+    for arquivo in arquivos:
+        planilha(arquivo)
+
+
+def abrindo_janela():
+    root = tk.Tk()
+    # Cria um botão para selecionar imagens
+    botao_selecionar = tk.Button(root, text="Selecionar Imagens", command=selecionar_imagens)
+    botao_selecionar.pack(pady=20)
+    # Exibe a janela
+    root.mainloop()
+
+
+#código antigo
 
 def encontrar_valores(palavras):
     # Encontrar o índice onde começa a seção de Aposta Retornos
@@ -130,7 +156,7 @@ def planilha(nome):
         values = result.get("values", [])
 
         # Adiciona uma nova linha com os dados fornecidos
-        nova_linha_range = f"Página1!A{len(values) + 2}:F{len(values) + 2}"
+        nova_linha_range = f"Janeiro!A{len(values) + 2}:F{len(values) + 2}"
         nova_linha_body = {"values": [nova_linha]}
         sheet.values().update(
             spreadsheetId=SAMPLE_SPREADSHEET_ID,
