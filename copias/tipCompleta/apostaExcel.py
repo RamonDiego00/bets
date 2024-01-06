@@ -14,7 +14,7 @@ from tkinter import filedialog
 # If modifying these scopes, delete the file token.json.
 SCOPES = ["https://www.googleapis.com/auth/spreadsheets"]
 
-# The ID and range of a sample spreadsheet.
+# # The ID and range of a sample spreadsheet.
 SAMPLE_SPREADSHEET_ID = "1KyZhn9tXtMfHNf76fe0RP0c19c9iwEzLtkKXW6LsptU"
 SAMPLE_RANGE_NAME = "Janeiro!A2:E"
 
@@ -65,7 +65,10 @@ def encontrar_valores(palavras):
         indice_apostado = indice_retornos + 1
         if indice_apostado < len(palavras):
             valor_apostado_str = palavras[indice_apostado].replace('R$', '').replace(',', '.')
-            valor_apostado = float(valor_apostado_str)
+            if 'O' in valor_apostado_str:
+                valor_apostado = 0.00
+            else:
+                valor_apostado = float(valor_apostado_str)
 
         if valor_retorno != 0:
             resolvida = True

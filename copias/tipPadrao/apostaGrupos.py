@@ -1,8 +1,116 @@
 import time
 from PIL import Image
+import pytesseract
+import os
+
+os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = r"C:\tips\credentials.json"
+from google.oauth2 import service_account
+from google.cloud import vision_v1
+from google.protobuf.json_format import MessageToJson
 
 import cv2
 import pytesseract
+
+import cv2
+import pytesseract
+
+import cv2
+import pytesseract
+
+import cv2
+import pytesseract
+
+def identify_phrases(image_path):
+    pytesseract.pytesseract.tesseract_cmd = r'C:\Program Files\Tesseract-OCR\tesseract.exe'
+
+    # Importar a imagem
+    image = cv2.imread(image_path)
+
+    # Converter a imagem para escala de cinza
+    grayscale_image = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
+
+    # Aplicar thresholding na imagem
+    thresholded_image = cv2.threshold(grayscale_image, 127, 255, cv2.THRESH_BINARY_INV)[1]
+
+    # Encontrar apenas contornos maiores
+    contours, _ = cv2.findContours(thresholded_image, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
+    large_contours = [cnt for cnt in contours if cv2.contourArea(cnt) > 100]
+
+    # Iterar sobre os contornos maiores
+    phrases = []
+    current_phrase = ""
+
+    for contour in large_contours:
+        # Encontrar a caixa delimitadora do contorno
+        x, y, w, h = cv2.boundingRect(contour)
+
+        # Verificar se a caixa delimitadora é grande o suficiente
+        if w > 10 and h > 10:
+            # Extrair o texto da caixa delimitadora
+            text = pytesseract.image_to_string(image[y:y + h, x:x + w])
+
+            # Adicionar o texto à frase atual
+            current_phrase += text
+
+            # Verificar se o texto contém um ponto
+            if "." in text:
+                # A frase terminou, adicionar à lista de frases
+                phrases.append(current_phrase.strip())
+                # Imprimir a frase no console
+                print(current_phrase.strip())
+                # Iniciar uma nova frase
+                current_phrase = ""
+
+    # Adicionar a última frase, se houver
+    if current_phrase:
+        phrases.append(current_phrase.strip())
+        # Imprimir a última frase no console
+        print(current_phrase.strip())
+    else:
+        # Se nenhuma frase foi encontrada, imprimir a mensagem "nada encontrado"
+        print("nada encontrado")
+
+    return phrases
+
+
+
+
+
+def detect_text(image_path):
+    # Caminho para o arquivo de credenciais JSON
+    credentials_path = 'C:/tips/credentials.json'
+
+    # Carregue as credenciais do arquivo JSON
+    credentials = service_account.Credentials.from_service_account_file(credentials_path)
+
+    # Use as credenciais ao criar o cliente Vision
+    client = vision_v1.ImageAnnotatorClient(credentials=credentials)
+
+    with open(image_path, 'rb') as image_file:
+        content = image_file.read()
+
+    image = vision_v1.Image(content=content)
+    response = client.text_detection(image=image)
+    texts = response.text_annotations
+
+    if texts:
+        for text in texts:
+            print(f'Detected text: "{text.description}"')
+            vertices = [(vertex.x, vertex.y) for vertex in text.bounding_poly.vertices]
+            print(f'Bounding Polygon: {vertices}')
+
+            # Converte as informações para JSON para análise adicional se necessário
+            text_json = MessageToJson(text)
+            print(f'Text JSON: {text_json}')
+    else:
+        print('No text detected.')
+
+
+
+
+
+
+
 
 
 def copiando():
