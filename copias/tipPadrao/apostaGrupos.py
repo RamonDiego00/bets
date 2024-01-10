@@ -175,7 +175,7 @@ def copiando():
     lista_de_pares = extrair_pares(texto_extraido)
 
     for par in lista_de_pares:
-        #Aplica tratamento para cada par
+        #Aplica tratamento para cada par teste
 
         #Futebol cartão
         if("Cart" in par):
