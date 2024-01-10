@@ -1,3 +1,4 @@
+import re
 import time
 from PIL import Image
 import pytesseract
@@ -7,15 +8,6 @@ os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = r"C:\tips\credentials.json"
 from google.oauth2 import service_account
 from google.cloud import vision_v1
 from google.protobuf.json_format import MessageToJson
-
-import cv2
-import pytesseract
-
-import cv2
-import pytesseract
-
-import cv2
-import pytesseract
 
 import cv2
 import pytesseract
@@ -108,9 +100,27 @@ def detect_text(image_path):
 
 
 
+# def extrair_texto_personalizado(texto):
+#     inicio = texto.find("R$2.755,00")
+#     fim = texto.find("Valor de Aposta Retornos Potenciais")
+#
+#     if inicio != -1 and fim != -1:
+#         texto_capturado = texto[inicio+len("R$2.755,00"):fim].strip()
+#         return texto_capturado
+#     else:
+#         return None
 
+def extrair_pares(texto):
+    pares = []
+    inicio = texto.find("R$2.755,00")
+    fim = texto.find("Valor de Aposta Retornos Potenciais")
 
+    if inicio != -1 and fim != -1:
+        texto_capturado = texto[inicio + len("R$2.755,00"):fim].strip()
+        # Dividir o texto em pares usando a quebra de linha como delimitador
+        pares = [par.strip() for par in texto_capturado.split('\n') if par.strip()]
 
+    return pares
 
 
 def copiando():
@@ -136,9 +146,13 @@ def copiando():
     # Dividir o texto em palavras
     palavras = texto_extraido.split()
 
-    print(palavras)
+    # print(texto_extraido)
 
-    #Vamos mudar a estrategia, pegar o index de criar(começo) e pegar o index de valor(final)
+    # texto_capturado = extrair_texto_personalizado(texto_extraido)
+    # if texto_capturado:
+    #     print(texto_capturado)
+    # else:
+    #     print("Nenhum texto correspondente encontrado.")
     try:
         indice_criar = palavras.index('Criar')
         print(indice_criar)
@@ -153,8 +167,71 @@ def copiando():
 
     #pegar confronto
     confronto = ' '.join(palavras[11:14])
+
     print(confronto)
     #Separar em container cada aposta das multiplas
+
+
+    lista_de_pares = extrair_pares(texto_extraido)
+
+    for par in lista_de_pares:
+        #Aplica tratamento para cada par
+
+        #Futebol cartão
+        if("Cart" in par):
+             with sync_playwright() as p:
+              #Iniciar o navegador (pode ser 'chromium', 'firefox' ou 'webkit')
+              browser = p.chromium.launch(headless=False)
+
+              #Criar uma nova página
+              page = browser.new_page()
+
+              # Navegar para a Bet
+              page.goto(
+                'https://www.bet365.com/?affiliate=365_02667223&gclid=CjwKCAiA-P-rBhBEEiwAQEXhH-yTmRmIswHFrrieagZfBLQuaDedy4o-CfwzInwWB-hIKbTjqpeg8BoCfaMQAvD_BwE#/AC/B18/C20915116/D48/E1453/F10/')
+
+              page.wait_for_timeout(2000)
+              # page.locator('xpath=/html/body/div[1]/div/div[4]/div[1]/div/div[2]/div[4]/div[2]/div').click()
+              page.locator("xpath=/html/body/div[1]/div/div[4]/div[1]/div/div[2]/div[4]/div[2]/div").click()
+              page.wait_for_timeout(2000)
+              page.fill("xpath=/html/body/div[1]/div/div[3]/div/div[2]/input", "Ramonzin35")
+              page.fill("xpath=/html/body/div[1]/div/div[3]/div/div[3]/input", "ApostasBrabas980#")
+              page.locator("xpath=/html/body/div[1]/div/div[3]/div/div[4]/div").click()
+              # time.sleep(10)
+              page.wait_for_timeout(10000)
+              page.locator("xpath=/html/body/div[1]/div/div[3]/div[1]/div/div[3]/div[4]/div[1]/div").click()
+              page.locator("xpath=/html/body/div[1]/div/div[3]/div[1]/div/div[3]/div[2]/div[1]/input").click()
+
+              #barra de pesquisa
+              page.locator("xpath=/html/body/div/div/div[3]/div[1]/div/div[3]/div[4]/div[1]/div").click()
+
+              page.fill("xpath=/html/body/div/div/div[3]/div[1]/div/div[3]/div[2]/div[1]/input", confronto)
+
+
+              # Vamos colocar a pesquisa do jogo aqui
+              page.fill("xpath=/html/body/div[1]/div/div[3]/div/div[3]/input", "ApostasBrabas980#")
+
+              if("Mais" in par):
+                  "Mais"
+              else:
+                  "Menos"
+              # Fechar o navegador
+              browser.close()
+        #Futebol Resultado
+
+        #Futebol Escanteios
+        #Futebol Total de gols
+        #Futebol Total chutes a gol
+        #Futebol Total finalizações
+        #Futebol Intervalo
+        #Futebol Dupla hipótese
+
+
+             print(par)
+
+    print("teste1")
+
+    #Vamos mudar a estrategia, pegar o index de criar(começo) e pegar o index de valor(final)
 
 
 

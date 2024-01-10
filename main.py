@@ -7,9 +7,9 @@ from copias.tipPadrao import apostaGrupos
 # apostaExcel.abrindo_janela()
 
 #Vai fazer a cópia da aposta
-# apostaGrupos.copiando()
+apostaGrupos.copiando()
 # apostaGrupos.detect_text(r'C:\Users\ramon\Downloads\teste1.jpeg')
-apostaGrupos.identify_phrases(r'C:\Users\ramon\Downloads\teste1.jpeg')
+# apostaGrupos.identify_phrases(r'C:\Users\ramon\Downloads\teste1.jpeg')
 #Faz pesquisas detalhadas dos jogadores
 
 #Vai falar a porcentagem da aposta dar certo
