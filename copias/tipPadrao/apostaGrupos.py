@@ -3,6 +3,13 @@ import time
 from PIL import Image
 import pytesseract
 import os
+from selenium import webdriver
+from selenium.webdriver.common.by import By
+from selenium.webdriver.common.keys import Keys
+from selenium.webdriver.common.action_chains import ActionChains
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
+from selenium.webdriver.chrome.service import Service as ChromeService
 
 os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = r"C:\tips\credentials.json"
 from google.oauth2 import service_account
@@ -179,31 +186,107 @@ def copiando():
 
         #Futebol cartão
         if("Cart" in par):
-             with sync_playwright() as p:
-              #Iniciar o navegador (pode ser 'chromium', 'firefox' ou 'webkit')
+
+            # # Caminho do executável do ChromeDriver (ajuste conforme necessário)
+            # chrome_driver_path = r"C:\Users\ramon\Downloads\chromedriver-win64\chromedriver-win64\chromedriver.exe"
+            #
+            # # Iniciar o navegador Chrome
+            # chrome_options = webdriver.ChromeOptions()
+            # chrome_options.add_argument('--headless')  # Se desejar executar sem interface gráfica
+            # driver = webdriver.Chrome()
+            #
+            # # Navegar para a Bet
+            # driver.get(
+            #     'https://www.bet365.com/?affiliate=365_02667223&gclid=CjwKCAiA-P-rBhBEEiwAQEXhH-yTmRmIswHFrrieagZfBLQuaDedy4o-CfwzInwWB-hIKbTjqpeg8BoCfaMQAvD_BwE#/AC/B18/C20915116/D48/E1453/F10/')
+            # time.sleep(5)
+            # # Esperar até que o botão seja clicável
+            # button_locator = (By.XPATH, "/html/body/div[1]/div/div[4]/div[1]/div/div[2]/div[4]/div[2]/div")
+            # # WebDriverWait(driver, 10).until(EC.element_to_be_clickable(button_locator))
+            #
+            # # Clicar no botão
+            # driver.find_element(*button_locator).click()
+            #
+            # # Preencher campos de usuário e senha
+            # username_locator = (By.XPATH, "/html/body/div[1]/div/div[3]/div/div[2]/input")
+            # password_locator = (By.XPATH, "/html/body/div[1]/div/div[3]/div/div[3]/input")
+            #
+            # WebDriverWait(driver, 10).until(EC.element_to_be_clickable(username_locator))
+            # driver.find_element(*username_locator).send_keys("Ramonzin35")
+            #
+            # WebDriverWait(driver, 10).until(EC.element_to_be_clickable(password_locator))
+            # driver.find_element(*password_locator).send_keys("ApostasBrabas980#")
+            #
+            # # Clicar no botão de login
+            # login_button_locator = (By.XPATH, "/html/body/div[1]/div/div[3]/div/div[4]/div")
+            # WebDriverWait(driver, 10).until(EC.element_to_be_clickable(login_button_locator))
+            # driver.find_element(*login_button_locator).click()
+            #
+            # # Pausa para aguardar carregamento (ajuste conforme necessário)
+            # time.sleep(10)
+            # # cookies = (By.XPATH, "/ html / body / div[3] / div / div[2] / div[2]")
+            # # WebDriverWait(driver, 10).until(EC.element_to_be_clickable(cookies))
+            # # driver.find_element(*cookies).click()
+            #
+            # time.sleep(30)
+            # # Clicar na barra de pesquisa
+            # # search_bar_locator = (By.XPATH, "/html/body/div/div/div[3]/div[1]/div/div[3]/div[4]/div[1]/div")
+            # # WebDriverWait(driver, 10).until(EC.element_to_be_clickable(search_bar_locator))
+            # # driver.find_element(*search_bar_locator).click()
+            #
+            # # Preencher campo de pesquisa
+            # # confronto = "SeuConfronto"
+            # # search_input_locator = (By.XPATH, "/html/body/div/div/div[3]/div[1]/div/div[3]/div[2]/div[1]/input")
+            # # WebDriverWait(driver, 10).until(EC.element_to_be_clickable(search_input_locator))
+            # # driver.find_element(*search_input_locator).send_keys(confronto)
+            #
+            # # Preencher pesquisa do jogo
+            # # game_search_locator = (By.XPATH, "/html/body/div[1]/div/div[3]/div/div[3]/input")
+            # # WebDriverWait(driver, 10).until(EC.element_to_be_clickable(game_search_locator))
+            # # driver.find_element(*game_search_locator).send_keys("")
+            #
+            # # Fechar o navegador
+            # driver.quit()
+
+            from playwright.sync_api import sync_playwright
+
+            with sync_playwright() as p:
+                # Iniciar o navegador (pode ser 'chromium', 'firefox' ou 'webkit')
               browser = p.chromium.launch(headless=False)
 
-              #Criar uma nova página
-              page = browser.new_page()
+                # Criar uma nova página
+              page = browser.new_page(
+                    user_agent='Mozilla/5.0 (Windowns NT 10.0; Win64; x64) AppleWebKit/537.36(KHTML, like Gecko) Chrome/104.0.5112.102 Safari/537.36Edg/104.01293.63',
+                    extra_http_headers={
+                        'Accept': '*/*',
+                        'Accept-Encoding': 'gzip, deflate, br',
+                        'Accept-Language': 'pt-BR,pt;q=0.0,en;q=0.8,enGB;q=0.7,en=US;q=0.6',
+                        'Connection': 'keep-alive',
+                        'Cookie': 'rmbs=3; aps03=cf=N5cg=1&cst=05ct=285hd=N&1ng=336oty=2&tz1=16; cc=1; qBvrxRyB=A45IeaqEAQAAWy947 jhK5mBXhZKpg0wmWp8YvPIs8kripFBYVPIsBKANSF66TS$919JVHIAbtM4TWucn46HBAAEBAAAAAA |1|1|95c2dbb2f3550a5131f'
+                    }
+                )
 
-              # Navegar para a Bet
+
+                # Navegar para a Bet
               page.goto(
                 'https://www.bet365.com/?affiliate=365_02667223&gclid=CjwKCAiA-P-rBhBEEiwAQEXhH-yTmRmIswHFrrieagZfBLQuaDedy4o-CfwzInwWB-hIKbTjqpeg8BoCfaMQAvD_BwE#/AC/B18/C20915116/D48/E1453/F10/')
 
-              page.wait_for_timeout(2000)
+              page.wait_for_timeout(5000)
               # page.locator('xpath=/html/body/div[1]/div/div[4]/div[1]/div/div[2]/div[4]/div[2]/div').click()
               page.locator("xpath=/html/body/div[1]/div/div[4]/div[1]/div/div[2]/div[4]/div[2]/div").click()
-              page.wait_for_timeout(2000)
+              page.wait_for_timeout(5000)
               page.fill("xpath=/html/body/div[1]/div/div[3]/div/div[2]/input", "Ramonzin35")
+              page.wait_for_timeout(5000)
               page.fill("xpath=/html/body/div[1]/div/div[3]/div/div[3]/input", "ApostasBrabas980#")
+              page.wait_for_timeout(5000)
               page.locator("xpath=/html/body/div[1]/div/div[3]/div/div[4]/div").click()
               # time.sleep(10)
               page.wait_for_timeout(10000)
-              page.locator("xpath=/html/body/div[1]/div/div[3]/div[1]/div/div[3]/div[4]/div[1]/div").click()
-              page.locator("xpath=/html/body/div[1]/div/div[3]/div[1]/div/div[3]/div[2]/div[1]/input").click()
-
+              # page.locator("xpath=/html/body/div[1]/div/div[3]/div[1]/div/div[3]/div[4]/div[1]/div").click()
+              # page.locator("xpath=/html/body/div[1]/div/div[3]/div[1]/div/div[3]/div[2]/div[1]/input").click()
+              barra_pesquisa = "xpath=/html/body/div/div/div[3]/div[1]/div/div[3]/div[4]/div[1]/div"
+              page.wait_for_selector(barra_pesquisa)
               #barra de pesquisa
-              page.locator("xpath=/html/body/div/div/div[3]/div[1]/div/div[3]/div[4]/div[1]/div").click()
+              page.locator(barra_pesquisa).click()
 
               page.fill("xpath=/html/body/div/div/div[3]/div[1]/div/div[3]/div[2]/div[1]/input", confronto)
 
@@ -227,7 +310,7 @@ def copiando():
         #Futebol Dupla hipótese
 
 
-             print(par)
+            print(par)
 
     print("teste1")
 
